@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lattitude - Data</title>
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="reset.css"> -->
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <script src="https://kit.fontawesome.com/f1e181a5ee.js"></script>
+
+</head>
+<body>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand topnav" href="/">Lattitude</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse nav navbar-nav" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-lg-auto ml-xs-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plots</a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item"href="/maxtemp">Max Temperature</a>
+                        <a class="dropdown-item"href="/humidity">Humidity</a>
+                        <a class="dropdown-item"href="/cloudiness">Cloudiness</a>
+                        <a class="dropdown-item"href="/windspeed">Wind Speed</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comparison">Comparison</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/data">Data</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- MAIN -->
+    <main>
+        <!-- <section class="posts">    -->
+        <div class="container">
+          <div class="row" style="align-content: center;">
+              <div class="col-md-12" style="align-content: center;">  
+                <article class="container post clearfix">
+                    <h3>Data<br></h3>
+                    <div class=section-line><br><br></div>
+                    <h5><br><br>The following table includes all of the data used for plotting during this project.<br/><br/></h5>
+                    <table class="table table-sm table-responsive-xl table-striped table-hover">
+                        <tr>
+                            {% for col in column_names %}
+                            <th>{{col}}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for row in row_data %}
+                        <tr>
+                            {% for col, row_ in zip(column_names, row) %}
+                            <!-- {% if col == link_column %} -->
+                            <!-- <td>
+                                <button type="submit" value={{ row_ }} name="person_id" form="patient_form" class="patient_button">
+                                    {{ row_ }}
+                                </button>
+                            </td> -->
+                            <!-- {% else %} -->
+                            <td>{{row_}}</td>
+                            {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    
+                    </table>
+                  </article>
+              </div>
+          </div>
+        </div>
+        <div class="container post">
+          
+        </div>
+    </main>
+</body>
+</html>
+
+      </main>
+
+
+  <div class=footer_line></div>
+  <footer>
+    <p>&copy; Copyright JJREE Coding Bootcamp 2019</p>
+  </footer>
+
+  <script>
+    //var csv is the CSV file with headers
+    function csvJSON(csv){
+      var lines=csv.split("\n");
+      var result = [];
+      var headers=lines[0].split(",");
+
+      for(var i=1;i<lines.length;i++){
+        var obj = {};
+        var currentline=lines[i].split(",");
+
+        for(var j=0;j<headers.length;j++){
+          obj[headers[j]] = currentline[j];
+        }
+        result.push(obj);
+      }
+      //return result; //JavaScript object
+      return JSON.stringify(result); //JSON
+    }
+  </script>
+</body>
+</html>

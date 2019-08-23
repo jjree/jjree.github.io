@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Media Query Example</title>
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="reset.css"> -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="topnav">
+        <h1 class=header>Lattitude</h1>
+        <div class="topnav-right">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="myFunction()">Plots
+                    <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content" id="myDropdown">
+                  <a href="/maxtemp">Max Temperature</a>
+                  <a href="/humidity">Humidity</a>
+                  <a href="/cloudiness">Cloudiness</a>
+                  <a href="/windspeed">Wind Speed</a>
+                </div>
+                <button class="dropbtn" onclick="window.location.href='/comparison'">Comparison</button>
+            <!-- <a href="/comparison">Comparison </a></div> -->
+                <button class="dropbtn" onclick="window.location.href='/data'">Data</button>
+            </div>
+          </div>
+        </div>   
+    </div>
+
+    <main>
+        <section class="posts">   
+          <article class="post">
+              <h3>Comparison: Latitude vs. X<br/><br/></h3>
+              <div class=section-line><br/><br/></div>
+              <h5>Click any plot to get an in-depth analysis.<br/><br/></h5>
+              <table>
+                <tr>
+                  <td>
+                    <h4 id=image-title>vs. Max Temperature</h4>
+                    <img class=hoverable-image src="/static/resources/assets/images/Fig1.png" onclick="window.location.href='/maxtemp'">
+                  </td>
+                  <td>
+                    <h4 id=image-title>vs. Humidity</h4>
+                    <img class=hoverable-image src="/static/resources/assets/images/Fig2.png" onclick="window.location.href='/humidity'"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <h4 id=image-title>vs. Cloudiness</h4>
+                    <img class=hoverable-image src="/static/resources/assets/images/Fig3.png" onclick="window.location.href='/cloudiness'"></td>
+                  <td>
+                      <h4 id=image-title>vs. Wind Speed</h4>
+                    <img class=hoverable-image src="/static/resources/assets/images/Fig4.png" onclick="window.location.href='/windspeed'"></td>
+                </tr>
+            </table>
+          </article>
+          <article class="post">
+              <h3>lalallalala</h3>
+          </article>
+        </section>
+      </main>
+<!--Giving each div a different class in order to apply styles to them-->
+  <div class="box box-1">TESTING comparison PAGE</div>
+  <div class="box box-2"></div>
+  <div class="box box-3"></div>
+  <div class="box box-4"></div>
+  <div class="box box-5"></div>
+  <script>
+      /* When the user clicks on the button, 
+      toggle between hiding and showing the dropdown content */
+      function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+      }
+      
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function(e) {
+        if (!e.target.matches('.dropbtn')) {
+        var myDropdown = document.getElementById("myDropdown");
+          if (myDropdown.classList.contains('show')) {
+            myDropdown.classList.remove('show');
+          }
+        }
+      }
+  </script>
+</body>
+</html>
