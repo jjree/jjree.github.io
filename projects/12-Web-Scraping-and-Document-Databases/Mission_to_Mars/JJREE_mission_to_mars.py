@@ -16,10 +16,10 @@ import pymongo
 
 
 # Locate Chromedriver path
-#get_ipython().system('which chromedriver')
+#!which chromedriver
 
 
-# In[115]:
+# In[3]:
 
 
 # Initiate splinter Browser
@@ -31,7 +31,7 @@ browser = Browser('chrome', **executable_path, headless=False)
 # 
 # ### NASA Mars News
 
-# In[20]:
+# In[4]:
 
 
 # Initiate new url and browser to visit it
@@ -39,7 +39,7 @@ url = 'https://mars.nasa.gov/news/'
 browser.visit(url)
 
 
-# In[13]:
+# In[5]:
 
 
 # Extract HTML from site
@@ -47,10 +47,11 @@ html = browser.html
 soup = bs(html, 'html.parser')
 
 
-# In[13]:
+# In[6]:
 
 
 # Find and print titles of stories
+title_list = []
 story_list = soup.find_all('ul', class_='item_list')
 
 for story in story_list:
@@ -58,22 +59,33 @@ for story in story_list:
     
 for title in titles:
     print(title.text)
+    title_list.append(title.text)
 
 
-# In[14]:
+# In[7]:
 
 
 # Find and print paragraphs of featured stories
+paras_list=[]
 paras = story.find_all('div', class_='article_teaser_body')
 for para in paras:
     print(para.text)
+    paras_list.append(para.text)
+
+
+# In[8]:
+
+
+# STORE OUTPUT
+mars_news = [{"title": title, "paragraph": para} for title,para in zip(title_list, paras_list)]
+print (mars_news) 
 
 
 # ----
 # 
 # ### JPL Mars Space Images - Featured Image
 
-# In[8]:
+# In[9]:
 
 
 # Initiate new url and browser to visit it
@@ -81,7 +93,7 @@ url1 = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
 browser.visit(url1)
 
 
-# In[15]:
+# In[10]:
 
 
 # Extract HTML from site
@@ -89,7 +101,7 @@ html1 = browser.html
 soup1 = bs(html1, 'html.parser')
 
 
-# In[15]:
+# In[11]:
 
 
 # Locate images
@@ -100,18 +112,23 @@ featured_image_url = []
 try:
     for art in articles:
         featured_image = art.a['data-fancybox-href']
+
         featured_image_url.append("https://www.jpl.nasa.gov" + featured_image)
         print (f"https://www.jpl.nasa.gov{featured_image}")
     
 except AttributeError as e:
     print(e)
 
+# STORE OUTPUT
+mars_img = featured_image_url
+mars_img
+
 
 # ----
 # 
 # ### Mars Weather
 
-# In[21]:
+# In[12]:
 
 
 # Initiate new url and browser to visit it
@@ -119,73 +136,86 @@ url2 = 'https://twitter.com/marswxreport?lang=en'
 browser.visit(url2)
 
 
-# In[72]:
+# In[13]:
 
 
 # Extract HTML from site
 html2 = browser.html
-soup2 = bs(html2, 'lxml')
+soup2 = bs(html2, 'html.parser')
 
 
-# In[77]:
+# In[14]:
 
 
 # Find and print Mars Weather
-mars_weather_all = soup2.find_all('div', class_='js-tweet-text-container')
+mars_weather = []
+mars_weather_all = (soup2.find_all('div', class_='js-tweet-text-container'))
 
 for weather in mars_weather_all:
     print(weather.text)
+    mars_weather.append(weather.text.strip())
+
+# STORE OUTPUT
+print(mars_weather)
 
 
 # ----
 # 
 # ### Mars Facts
 
-# In[79]:
+# In[15]:
 
 
 # Initiate new url
 url3 = 'https://space-facts.com/mars/'
 
 
-# In[81]:
+# In[16]:
 
 
 # Extract HTML from site
 tables = pd.read_html(url3)
-tables
+print(tables)
 
 
-# In[82]:
+# In[17]:
 
 
 # Create DF of table1
 mars_table1_df = tables[0]
-mars_table1_df
+print(mars_table1_df)
 
 
-# In[84]:
+# In[18]:
 
 
 # Convert table1 to HTML
 mars_table1_HTML = mars_table1_df.to_html()
-mars_table1_HTML
+print(mars_table1_HTML)
 
 
-# In[83]:
+# In[19]:
 
 
 # Create DF of table 2
 mars_table2_df = tables[1]
-mars_table2_df
+print(mars_table2_df)
 
 
-# In[86]:
+# In[20]:
 
 
 # Convert table2 to HTMl
 mars_table2_HTML = mars_table2_df.to_html()
-mars_table2_HTML
+print(mars_table2_HTML)
+
+
+# In[21]:
+
+
+# STORE OUTPUT
+mars_facts = [mars_table1_HTML, mars_table2_HTML]
+print(mars_facts)
 
 
 # ----
@@ -193,7 +223,7 @@ mars_table2_HTML
 # ### Mars Hemispheres
 # 
 
-# In[116]:
+# In[22]:
 
 
 # Initiate new URL
@@ -201,17 +231,7 @@ url4 = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=ta
 browser.visit(url4)
 
 
-# In[ ]:
-
-
-for category in categories:
-    title = category.text.strip()
-    category_list.append(title)
-    book_url = category.find('a')['href']
-    url_list.append(book_url)
-
-
-# In[205]:
+# In[23]:
 
 
 # Extract HTML from site
@@ -247,13 +267,27 @@ for lc in links_container:
     browser.visit(url4)
 
 # Print list of dictionaries of hemispheres
-print(hemisphere_image_urls)
+mars_hemisphere = hemisphere_image_urls
+print(mars_hemisphere)
 
 
-# In[206]:
+# ## Step 2 - MongoDB and Flask Application
+
+# In[24]:
 
 
+# Convert ipynb to py file
 get_ipython().system('jupyter nbconvert --to script JJREE_mission_to_mars.ipynb')
+mars_
+
+
+# In[33]:
+
+
+all_info={}
+all_info= {"mars_news": mars_news,"mars_img": mars_img, "mars_weather": mars_weather,"mars_facts": mars_facts, "mars_hemispheres": mars_hemisphere}
+
+all_info
 
 
 # In[ ]:
