@@ -13,6 +13,8 @@ import os
 import csv 
 import numpy as np
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
+
 
 
 
@@ -27,6 +29,7 @@ app = Flask(__name__)
 
 # Initialize PyMongo to work with MongoDBs
 app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_db"
+# client = MongoClient('mongodb://localhost:27017/')
 mongo = PyMongo(app)
 
 #################################################
@@ -39,7 +42,11 @@ mongo = PyMongo(app)
 #   * Links to each visualizations page.
 @app.route("/")
 def index():
-    mars_info = mongo.db.mars_info.find_one()
+    if (mongo.db.mars_info.find_one() == None):
+        mars_info = mongo.db.mars_info
+    else:
+        mars_info = mongo.db.mars_info.find_one()
+
     return render_template('/index.html', mars_info=mars_info)
 
 @app.route("/scrape")
@@ -66,6 +73,8 @@ def scrape():
     # Initiate new url and browser to visit it
     url = 'https://mars.nasa.gov/news/'
     browser.visit(url)
+
+    
 
     # Extract HTML from site and parse with BS
     html = browser.html
@@ -99,6 +108,8 @@ def scrape():
     url1 = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(url1)
 
+    
+
     # Extract HTML from site
     html1 = browser.html
     soup1 = bs(html1, 'html.parser')
@@ -108,6 +119,20 @@ def scrape():
 
     # Find URL and store into 'featured_image_url' list
     featured_image_url = []
+
+    #full_image
+    # browser.click_link_by_id('full_image')
+    # html1_1 = browser.click_link_by_text('more info     ')
+
+    link = "https://www.jpl.nasa.gov" + soup1.find('footer').a['data-link']
+    browser.visit(link)
+    html1_1 = browser.html
+    soup1_1 = bs(html1_1, 'html.parser')
+    main_image = soup1_1.find('figure', class_='lede').a['href']
+    main_image = "https://www.jpl.nasa.gov" + main_image
+    print(main_image)
+    featured_image_url.append(main_image)
+
     try:
         for art in articles:
             featured_image = art.a['data-fancybox-href']
@@ -127,6 +152,8 @@ def scrape():
     # Initiate new url and browser to visit it
     url2 = 'https://twitter.com/marswxreport?lang=en'
     browser.visit(url2)
+
+    
 
     # Extract HTML from site
     html2 = browser.html
@@ -194,6 +221,8 @@ def scrape():
     url4 = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(url4)
 
+    
+
     # Extract HTML from site
     html4 = browser.html
     soup4 = bs(html4, 'html.parser')
@@ -209,6 +238,9 @@ def scrape():
         link = lc.a['href']
         full_link = "https://astrogeology.usgs.gov" + link
         browser.visit(full_link)
+        
+            
+
         click_soup = bs(browser.html, 'html.parser')
         
         # Find title
@@ -225,6 +257,8 @@ def scrape():
         
         # Return to starting page (used for testing purposes)
         browser.visit(url4)
+
+        
 
     # Print list of dictionaries of hemispheres
     mars_hemisphere = hemisphere_image_urls
