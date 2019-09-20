@@ -10,6 +10,25 @@ body {
   margin: 0;
 }
 
+clear{
+  opacity: 50%
+}
+
+.hero {
+  position: relative;
+  height: 550px;
+  /* width: 100%; */
+  padding: 20px;
+  margin: 0;
+  background: black;
+  background-image: url("https://jjree.github.io/static/images/shahadat-shemul-BfrQnKBulYQ-unsplash.jpg");
+  /* background-image: url("static/images/joel-filipe-QwoNAhbmLLo-unsplash.jpg"); */
+  background-attachment: fixed;
+  background-position: bottom center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
 /* The wrapper contains all of the page's content besides the footer, which is pushed to the bottom of the page */
 .wrapper {
   position: relative;
